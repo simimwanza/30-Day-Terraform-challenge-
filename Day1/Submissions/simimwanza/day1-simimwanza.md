@@ -6,13 +6,13 @@
 - **GitHub Username:** simimwanza
 
 ## Task Completion
-- [ x ] Read Chapter 1 of "Terraform: Up & Running"
-- [ x ] Completed Required Hands-on Labs
-- [ x ] Set up AWS Account
-- [ x ] Installed Terraform
-- [ x ] Installed and Configured AWS CLI
-- [ x ] Installed VSCode with AWS Plugin
-- [ x ] Configured VSCode for AWS
+- [x] Read Chapter 1 of "Terraform: Up & Running"
+- [x] Completed Required Hands-on Labs
+- [x] Set up AWS Account
+- [x] Installed Terraform
+- [x] Installed and Configured AWS CLI
+- [x] Installed VSCode with AWS Plugin
+- [x] Configured VSCode for AWS
 
 ## Blog Post
 - **Title:** 30 days of terraform

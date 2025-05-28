@@ -16,23 +16,23 @@
 
 ## Blog Post
 - **Title:** What is Infrastructure as Code (IaC) and Why It's Transforming DevOps
-- **Link:** [Hashnode](https://simiops.hashnode.dev what-is-infrastructure-as-code-iac-and-why-its-transforming-devops)
+- **Link:** [Simiops Hashnode](https://simiops.hashnode.dev/what-is-infrastructure-as-code-iac-and-why-its-transforming-devops)
 
 ## Social Media
 - **Platform:** twitter
-- **Post Link:** 
+- **Post Link:** [Twitter](https://x.com/simi_mwanza/status/1927695830414168558)
 
 ## Notes and Observations
-[Share your key learnings, challenges faced, and how you overcame them]
+Interesting setting up the terraform environment, still learning and looking for more
 
 ## Additional Resources Used
-[List any additional resources you found helpful]
+- 
 
 ## Time Spent
-- Reading: [X hours]
-- Setup and Configuration: [X hours]
-- Blog Writing: [X hours]
-- Total: [X hours] 
+- Reading: [2]
+- Setup and Configuration: [3}
+- Blog Writing: [2]
+- Total: [7] 
 
 
 

@@ -3,7 +3,7 @@
 ## Personal Information
 - **Name:** Simi Mwanza
 - **Date:** 27-05-2026
-- **GitHub Username:** simimwanza
+- **GitHub Username:** simi-ops
 
 ## Task Completion
 - [x] Read Chapter 1 of "Terraform: Up & Running"
@@ -15,11 +15,11 @@
 - [x] Configured VSCode for AWS
 
 ## Blog Post
-- **Title:** 30 days of terraform
-- **Link:** [URL to your blog post]
+- **Title:** What is Infrastructure as Code (IaC) and Why It's Transforming DevOps
+- **Link:** [Hashnode](https://simiops.hashnode.dev what-is-infrastructure-as-code-iac-and-why-its-transforming-devops)
 
 ## Social Media
-- **Platform:** 
+- **Platform:** twitter
 - **Post Link:** 
 
 ## Notes and Observations

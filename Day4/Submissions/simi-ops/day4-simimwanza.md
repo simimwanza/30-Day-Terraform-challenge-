@@ -16,12 +16,12 @@
 
 ### Single Server Deployment
 - **Region:** us-west-2
-- **Instance Type:** 
+- **Instance Type:** t2-micro
 - **Key Features:** 
 
 ### Web Server Deployment
-- **Region:** 
-- **Instance Type:** 
+- **Region:** us-west-2
+- **Instance Type:** t2-micro
 - **Key Features:** 
 
 ## Infrastructure Diagrams
@@ -30,25 +30,25 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** [Your Blog Post Title]
-- **Link:** [URL to your blog post]
+- **Title:** Deploying a Highly Available Web App on AWS Using Terraform
+- **Link:** https://simiops.hashnode.dev/deploying-a-highly-available-web-app-on-aws-using-terraform
 
 ## Social Media
-- **Platform:** [Twitter/LinkedIn]
-- **Post Link:** [URL to your social media post]
+- **Platform:** Twitter
+- **Post Link:** https://x.com/simi_mwanza/status/1928160831386124432
 
 ## Notes and Observations
-[Share your key learnings, challenges faced, and how you overcame them]
+- 
 
 ## Additional Resources Used
-[List any additional resources you found helpful]
+- 
 
 ## Time Spent
-- Reading: [X hours]
-- Infrastructure Deployment: [X hours]
-- Diagram Creation: [X hours]
-- Blog Writing: [X hours]
-- Total: [X hours]
+- Reading: [ hours]
+- Infrastructure Deployment: [ hours]
+- Diagram Creation: [ hours]
+- Blog Writing: [ hours]
+- Total: [ hours]
 
 ## Repository Structure
 ```

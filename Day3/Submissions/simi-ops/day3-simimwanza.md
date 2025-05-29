@@ -16,13 +16,13 @@
 
 ### Single Server Deployment
 - **Region:** us-west-2
-- **Instance Type:** [EC2 Instance Type]
-- **Key Features:** [List key configurations]
+- **Instance Type:** t2-micro
+- **Key Features:** accessed through ssh only
 
 ### Web Server Deployment
 - **Region:** us-west-2
-- **Instance Type:** [EC2 Instance Type]
-- **Key Features:** [List key configurations]
+- **Instance Type:** t2-micro
+- **Key Features:** Apache Web server installed, and accesible with a sample web page
 
 ## Infrastructure Diagrams
 Please place your infrastructure diagrams in the `architecture` folder with the following files:
@@ -31,24 +31,25 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 
 ## Blog Post
 - **Title:** Deploying Your First Server with Terraform: A Beginner's Guide
-- **Link:** []()
+- **Link:** [Hashnode](https://simiops.hashnode.dev/deploying-your-first-server-with-terraform-a-beginners-guide)
 
 ## Social Media
 - **Platform:** Twitter
 - **Post Link:** https://x.com/simi_mwanza/status/1928079333689581722
 
 ## Notes and Observations
-[Share your key learnings, challenges faced, and how you overcame them]
+- Took some time to get used to the code, looking forward to learning more on terraform capabilities
 
 ## Additional Resources Used
-[List any additional resources you found helpful]
+- https://docs.aws.amazon.com/managedservices/latest/userguide/find-ami.html
+- https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-build
 
 ## Time Spent
-- Reading: [ hours]
-- Infrastructure Deployment: [ hours]
-- Diagram Creation: [ hours]
-- Blog Writing: [ hours]
-- Total: [ hours]
+- Reading: [ 3 hours]
+- Infrastructure Deployment: [ 2 hours]
+- Diagram Creation: [ 2 hours]
+- Blog Writing: [ 2 hours]
+- Total: [ 9 hours]
 
 ## Repository Structure
 ```

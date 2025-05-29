@@ -6,32 +6,32 @@
 - **GitHub Username:** simi-ops
 
 ## Task Completion
-- [ ] Read Chapter 2 of "Terraform: Up & Running" (Setting Up Your AWS Account & Installing Terraform)
-- [ ] Completed Required Hands-on Labs
-  - [ ] Lab 01: Setup your AWS Account (if needed)
-  - [ ] Lab 02: Install AWS CLI
-  - [ ] Lab 03: Installing Terraform and set up Terraform with AWS
-- [ ] Set up AWS account
-- [ ] Install Terraform locally
-- [ ] Install and configure AWS CLI
-- [ ] Install Visual Studio Code (VSCode) and add the AWS plugin
-- [ ] Configure VSCode to work with AWS
+- [x] Read Chapter 2 of "Terraform: Up & Running" (Setting Up Your AWS Account & Installing Terraform)
+- [x] Completed Required Hands-on Labs
+  - [x] Lab 01: Setup your AWS Account (if needed)
+  - [x] Lab 02: Install AWS CLI
+  - [x] Lab 03: Installing Terraform and set up Terraform with AWS
+- [x] Set up AWS account
+- [x] Install Terraform locally
+- [x] Install and configure AWS CLI
+- [x] Install Visual Studio Code (VSCode) and add the AWS plugin
+- [x] Configure VSCode to work with AWS
 
 ## Setup Validation
 
 ### Terraform Installation
-- **Version:** [Terraform version installed]
-- **Installation Method:** [How you installed Terraform]
-- **Path:** [Where Terraform is installed]
+- **Version:** terraform v1.12.1
+- **Installation Method:** Used CLI method to install on Codespaces and automated it to install it everytime I open it
+- **Path:** 
 
 ### AWS CLI Configuration
-- **Version:** [AWS CLI version]
-- **Default Region:** [Your default AWS region]
-- **Profile Configuration:** [Number of profiles configured]
+- **Version:** aws-cli/2.27.24
+- **Default Region:** us-west-2
+- **Profile Configuration:** 1
 
 ### VSCode Configuration
-- **Extensions Installed:** [List AWS and Terraform related extensions]
-- **AWS Plugin Status:** [Configured/Not Configured]
+- **Extensions Installed:** AWS Toolkit, HashiCorp Terraform
+- **AWS Plugin Status:** Configured
 
 ## Configuration Files
 Please place your configuration screenshots and validation files in the `setup-validation` folder:
@@ -48,19 +48,20 @@ Please place your configuration screenshots and validation files in the `setup-v
 - **Post Link:** 
 
 ## Notes and Observations
-[Share your key learnings, challenges faced, and how you overcame them during the setup process]
+- Alreasy had an AWS Account so setting up the rest was easy
+- Automated the installation of the extensions and installation of AWS and Terraform on startup using devcontainer
 
 ## Additional Resources Used
-[List any additional resources you found helpful for setup and configuration]
+- https://code.visualstudio.com/docs/devcontainers/create-dev-container
 
 ## Time Spent
-- Reading: [X hours]
-- AWS Account Setup: [X hours]
-- Terraform Installation: [X hours]
-- AWS CLI Configuration: [X hours]
-- VSCode Setup: [X hours]
-- Blog Writing: [X hours]
-- Total: [X hours]
+- Reading: [2 hours]
+- AWS Account Setup: [1 hours]
+- Terraform Installation: [0.15 hours]
+- AWS CLI Configuration: [0.15 hours]
+- VSCode Setup: [0.15 hours]
+- Blog Writing: [2 hours]
+- Total: [5.45 hours]
 
 ## Repository Structure
 ```
@@ -94,6 +95,6 @@ code --list-extensions | grep -E "(aws|terraform)"
 ```
 
 ## Troubleshooting Notes
-[Document any issues you encountered and how you resolved them] 
+- Used AI to generate the devcontainer JSON
 
 

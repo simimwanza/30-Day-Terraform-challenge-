@@ -45,7 +45,7 @@ Please place your configuration screenshots and validation files in the `setup-v
 
 ## Social Media
 - **Platform:** Twitter
-- **Post Link:** 
+- **Post Link:** https://x.com/simi_mwanza/status/1928078810173378995
 
 ## Notes and Observations
 - Alreasy had an AWS Account so setting up the rest was easy

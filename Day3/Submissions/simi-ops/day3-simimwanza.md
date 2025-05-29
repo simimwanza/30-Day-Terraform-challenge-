@@ -2,7 +2,7 @@
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 28th May 2026
+- **Date:** 28th May 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -15,12 +15,12 @@
 ## Infrastructure Details
 
 ### Single Server Deployment
-- **Region:** [AWS Region]
+- **Region:** us-west-2
 - **Instance Type:** [EC2 Instance Type]
 - **Key Features:** [List key configurations]
 
 ### Web Server Deployment
-- **Region:** [AWS Region]
+- **Region:** us-west-2
 - **Instance Type:** [EC2 Instance Type]
 - **Key Features:** [List key configurations]
 
@@ -30,12 +30,12 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** [Your Blog Post Title]
-- **Link:** [URL to your blog post]
+- **Title:** Deploying Your First Server with Terraform: A Beginner's Guide
+- **Link:** []()
 
 ## Social Media
-- **Platform:** [Twitter/LinkedIn]
-- **Post Link:** [URL to your social media post]
+- **Platform:** Twitter
+- **Post Link:** https://x.com/simi_mwanza/status/1928079333689581722
 
 ## Notes and Observations
 [Share your key learnings, challenges faced, and how you overcame them]
@@ -44,11 +44,11 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 [List any additional resources you found helpful]
 
 ## Time Spent
-- Reading: [X hours]
-- Infrastructure Deployment: [X hours]
-- Diagram Creation: [X hours]
-- Blog Writing: [X hours]
-- Total: [X hours]
+- Reading: [ hours]
+- Infrastructure Deployment: [ hours]
+- Diagram Creation: [ hours]
+- Blog Writing: [ hours]
+- Total: [ hours]
 
 ## Repository Structure
 ```

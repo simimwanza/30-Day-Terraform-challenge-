@@ -1,28 +1,28 @@
 # Day 5 Submission
 
 ## Personal Information
-- **Name:** [Your Name]
-- **Date:** [Date of Submission]
-- **GitHub Username:** [Your GitHub Username]
+- **Name:** Simi Mwanza
+- **Date:** 30th May 2025
+- **GitHub Username:** simi-ops
 
 ## Task Completion
-- [ ] Read Chapter 2 of "Terraform: Up & Running"
-- [ ] Completed Required Hands-on Labs
-- [ ] Deployed Single Server
-- [ ] Deployed Web Server
-- [ ] Created Infrastructure Diagrams
+- [x] Read Chapter 2 of "Terraform: Up & Running"
+- [x] Completed Required Hands-on Labs
+- [x] Deployed Single Server
+- [x] Deployed Web Server
+- [x] Created Infrastructure Diagrams
 
 ## Infrastructure Details
 
 ### Single Server Deployment
-- **Region:** [AWS Region]
-- **Instance Type:** [EC2 Instance Type]
-- **Key Features:** [List key configurations]
+- **Region:** us-west-2
+- **Instance Type:** t2.micro
+- **Key Features:** 
 
 ### Web Server Deployment
-- **Region:** [AWS Region]
-- **Instance Type:** [EC2 Instance Type]
-- **Key Features:** [List key configurations]
+- **Region:** us-west-2
+- **Instance Type:** t2.micro
+- **Key Features:** added load balancer
 
 ## Infrastructure Diagrams
 Please place your infrastructure diagrams in the `architecture` folder with the following files:
@@ -30,25 +30,25 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** [Your Blog Post Title]
-- **Link:** [URL to your blog post]
+- **Title:** Managing high traffic applications with AWS Elastic Load Balancer and Terraform
+- **Link:** https://simiops.hashnode.dev/managing-high-traffic-applications-with-aws-elastic-load-balancer-and-terraform
 
 ## Social Media
 - **Platform:** Twitter
 - **Post Link:** https://x.com/simi_mwanza/status/1928202423035633940
 
 ## Notes and Observations
-[Share your key learnings, challenges faced, and how you overcame them]
+- The single server deployment was straightforward, but I faced challenges with the web server setup due to the load balancer configuration.
 
 ## Additional Resources Used
-[List any additional resources you found helpful]
+- Terraform documentation for AWS provider
 
 ## Time Spent
-- Reading: [X hours]
-- Infrastructure Deployment: [X hours]
-- Diagram Creation: [X hours]
-- Blog Writing: [X hours]
-- Total: [X hours]
+- Reading: [ hours]
+- Infrastructure Deployment: [ hours]
+- Diagram Creation: [ hours]
+- Blog Writing: [ hours]
+- Total: [ hours]
 
 ## Repository Structure
 ```

@@ -22,8 +22,7 @@
 ### Web Server Deployment
 - **Region:** us-west-2
 - **Instance Type:** t2-micro
-- **Key Features:** 
-
+- **Key Features:** Added the use of variables for instance type and region, and data sources for AMI IDs.
 ## Infrastructure Diagrams
 Please place your infrastructure diagrams in the `architecture` folder with the following files:
 - `single-server.png` - Diagram for the single server deployment
@@ -38,17 +37,18 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - **Post Link:** https://x.com/simi_mwanza/status/1928160831386124432
 
 ## Notes and Observations
-- 
+- Integrated the use of variables and data sources in Terraform to enhance the flexibility and reusability of the code.
+- The deployment process was straightforward, and the use of Terraform made it easy to manage infrastructure as code.
 
 ## Additional Resources Used
 - 
 
 ## Time Spent
-- Reading: [ hours]
-- Infrastructure Deployment: [ hours]
-- Diagram Creation: [ hours]
-- Blog Writing: [ hours]
-- Total: [ hours]
+- Reading: [ 2 hours]
+- Infrastructure Deployment: [ 2 hours]
+- Diagram Creation: [ 1 hours]
+- Blog Writing: [ 2 hours]
+- Total: [ 7 hours]
 
 ## Repository Structure
 ```

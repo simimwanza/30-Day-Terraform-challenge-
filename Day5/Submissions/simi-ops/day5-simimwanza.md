@@ -54,15 +54,13 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 ```
 Day5/
 └── Submissions/
-    └── [Your GitHub Username]/
+    └── simi-ops/
         ├── architecture/
-        │   ├── single-server.png
         │   └── web-server.png
         ├── terraform/
-        │   ├── single-server/
-        │   │   └── main.tf
         │   └── web-server/
         │       └── main.tf
+        │       └── variables.tf        
         └── submission.md
 ``` 
 

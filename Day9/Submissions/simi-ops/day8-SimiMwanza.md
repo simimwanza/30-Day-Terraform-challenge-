@@ -1,8 +1,8 @@
-# Day 7 Submission
+# Day 8 Submission
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 1st June 2025
+- **Date:** 2nd June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -54,8 +54,21 @@ Day7/
         ├── terraform/
         │   └── web-server/
         │       ├── main.tf
-        |       ├── variable.tf
-        |       └── backend.tf 
+        │       ├── variables.tf
+        │       ├── outputs.tf
+        │       ├── modules/
+        │       │   ├── ec2/
+        │       │   │   ├── main.tf
+        │       │   │   ├── variables.tf
+        │       │   │   └── outputs.tf
+        │       │   ├── security_group/
+        │       │   │   ├── main.tf
+        │       │   │   ├── variables.tf
+        │       │   │   └── outputs.tf
+        │       │   └── alb/
+        │       │       ├── main.tf
+        │       │       ├── variables.tf
+        │       │       └── outputs.tf
         └── day7-SimiMwanza.md
 ``` 
 

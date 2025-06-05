@@ -1,8 +1,8 @@
-# Day 6 Submission
+# Day 7 Submission
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 31st May 2025
+- **Date:** 1st June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -17,51 +17,46 @@
 ### Web Server Deployment
 - **Region:** us-west-2
 - **Instance Type:** t2-micro
-- **Key Features:** Added a Load Balancer, and an S3 bucket to store the state file
+- **Key Features:** S3 bucket and DynamoDB table for state file and locking
 
 ## Infrastructure Diagrams
 Please place your infrastructure diagrams in the `architecture` folder with the following files:
-
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
 - **Title:** 
-- **Link:** How to Securely Store Terraform State Files with Remote Backends
+- **Link:** 
 
 ## Social Media
 - **Platform:** Twitter
 - **Post Link:** 
 
 ## Notes and Observations
-- Deployed the state file to S3     
-- Created an S3 bucket first using the command: 
-`aws s3api create-bucket --bucket simi-ops-terraform-state \ 
-    --region us-west-2 --create-bucket-configuration \
-    LocationConstraint=us-west-2`
+
 
 ## Additional Resources Used
-- 
+
 
 ## Time Spent
-- Reading: [X hours]
-- Infrastructure Deployment: [X hours]
-- Diagram Creation: [X hours]
-- Blog Writing: [X hours]
-- Total: [X hours]
+- Reading: [ hours]
+- Infrastructure Deployment: [ hours]
+- Diagram Creation: [ hours]
+- Blog Writing: [ hours]
+- Total: [ hours]
 
 ## Repository Structure
 ```
-Day6/
+Day7/
 └── Submissions/
-    └── [Your GitHub Username]/
+    └── simi-ops/
         ├── architecture/
         │   └── web-server.png
         ├── terraform/
         │   └── web-server/
         │       ├── main.tf
         |       ├── variable.tf
-        |       └── backend.tf        
-        └── day6-SimiMwanza.md
+        |       └── backend.tf 
+        └── day7-SimiMwanza.md
 ``` 
 
 

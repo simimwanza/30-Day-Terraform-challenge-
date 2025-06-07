@@ -53,9 +53,17 @@ Day7/
         │   └── web-server.png
         ├── terraform/
         │   └── web-server/
-        │       ├── main.tf
-        |       ├── variable.tf
-        |       └── backend.tf 
+        │   |   ├── main.tf
+        |   |   ├── variable.tf
+        |   |   └── backend.tf
+            |____dev/
+            │       ├── main.tf
+            |       ├── variable.tf
+            |       └── backend.tf 
+            |   prod/ 
+            │       ├── main.tf
+            |       ├── variable.tf
+            |       └── backend.tf 
         └── day7-SimiMwanza.md
 ``` 
 

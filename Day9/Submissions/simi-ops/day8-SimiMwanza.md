@@ -1,8 +1,8 @@
-# Day 8 Submission
+# Day 9 Submission
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 2nd June 2025
+- **Date:** 3rd June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -46,7 +46,7 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 
 ## Repository Structure
 ```
-Day7/
+Day9/
 └── Submissions/
     └── simi-ops/
         ├── architecture/
@@ -69,7 +69,7 @@ Day7/
         │       │       ├── main.tf
         │       │       ├── variables.tf
         │       │       └── outputs.tf
-        └── day7-SimiMwanza.md
+        └── day9-SimiMwanza.md
 ``` 
 
 

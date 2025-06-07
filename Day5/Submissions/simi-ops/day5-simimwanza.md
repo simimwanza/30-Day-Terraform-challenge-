@@ -44,11 +44,11 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - Terraform documentation for AWS provider
 
 ## Time Spent
-- Reading: [ hours]
-- Infrastructure Deployment: [ hours]
-- Diagram Creation: [ hours]
-- Blog Writing: [ hours]
-- Total: [ hours]
+- Reading: [2 hours]
+- Infrastructure Deployment: [2 hours]
+- Diagram Creation: [1 hours]
+- Blog Writing: [1 hours]
+- Total: [6 hours]
 
 ## Repository Structure
 ```

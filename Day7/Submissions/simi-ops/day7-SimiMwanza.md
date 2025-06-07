@@ -24,25 +24,25 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** 
-- **Link:** 
+- **Title:** State Isolation: Layout vs Workspace
+- **Link:** https://simiops.hashnode.dev/state-isolation-layout-vs-workspace
 
 ## Social Media
 - **Platform:** Twitter
-- **Post Link:** 
+- **Post Link:** https://x.com/simi_mwanza/status/1931339591253975318
 
 ## Notes and Observations
-
-
+- Set up my dynamodb table to store state lock files
+- Also set up workspaces
 ## Additional Resources Used
 
 
 ## Time Spent
-- Reading: [ hours]
-- Infrastructure Deployment: [ hours]
-- Diagram Creation: [ hours]
-- Blog Writing: [ hours]
-- Total: [ hours]
+- Reading: [1 hours]
+- Infrastructure Deployment: [1 hours]
+- Diagram Creation: [1 hours]
+- Blog Writing: [1 hours]
+- Total: [4 hours]
 
 ## Repository Structure
 ```

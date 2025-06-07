@@ -55,7 +55,7 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 ```
 Day3/
 └── Submissions/
-    └── [Your GitHub Username]/
+    └── simi-ops/
         ├── architecture/
         │   ├── single-server.png
         │   └── web-server.png

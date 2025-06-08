@@ -24,8 +24,8 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** Building Reusable Infrastructure with Terraform Modules
-- **Link:** https://simiops.hashnode.dev/building-reusable-infrastructure-with-terraform-modules
+- **Title:** Advanced Terraform Module Usage: Versioning, Nesting, and Reuse Across Environments
+- **Link:** https://simiops.hashnode.dev/advanced-terraform-module-usage-versioning-nesting-and-reuse-across-environments
 
 ## Social Media
 - **Platform:** Twitter

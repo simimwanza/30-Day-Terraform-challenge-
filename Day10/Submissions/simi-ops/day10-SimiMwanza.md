@@ -2,7 +2,7 @@
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 1st June 2025
+- **Date:** 6th June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -24,12 +24,12 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** 
-- **Link:** 
+- **Title:** How Loops and Conditionals Simplify Infrastructure as Code with Terraform
+- **Link:** https://simiops.hashnode.dev/how-loops-and-conditionals-simplify-infrastructure-as-code-with-terraform?showSharer=true
 
 ## Social Media
 - **Platform:** Twitter
-- **Post Link:** 
+- **Post Link:** https://x.com/simi_mwanza/status/1931811337828475098
 
 ## Notes and Observations
 

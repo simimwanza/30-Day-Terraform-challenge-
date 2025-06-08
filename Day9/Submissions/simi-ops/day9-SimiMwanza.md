@@ -2,7 +2,7 @@
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 3rd June 2025
+- **Date:** 5th June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -24,25 +24,29 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - `web-server.png` - Diagram for the web server deployment
 
 ## Blog Post
-- **Title:** 
-- **Link:** 
+- **Title:** Building Reusable Infrastructure with Terraform Modules
+- **Link:** https://simiops.hashnode.dev/building-reusable-infrastructure-with-terraform-modules
 
 ## Social Media
 - **Platform:** Twitter
-- **Post Link:** 
+- **Post Link:** https://x.com/simi_mwanza/status/1931811337828475098
 
 ## Notes and Observations
-
+- Set up modules for EC2, Security Group, and ALB to modularize the Terraform code.
+- Used variables for instance type and region to enhance flexibility.
+- Implemented remote state management using S3 and DynamoDB for state locking.
+- The deployment process was smooth, and the modular approach made it easy to manage and scale the infrastructure.
 
 ## Additional Resources Used
-
+- Terraform Documentation
+- AWS Documentation
 
 ## Time Spent
-- Reading: [ hours]
-- Infrastructure Deployment: [ hours]
-- Diagram Creation: [ hours]
-- Blog Writing: [ hours]
-- Total: [ hours]
+- Reading: [2 hours]
+- Infrastructure Deployment: [2 hours]
+- Diagram Creation: [1 hours]
+- Blog Writing: [2 hours]
+- Total: [7 hours]
 
 ## Repository Structure
 ```

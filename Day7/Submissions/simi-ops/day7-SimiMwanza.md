@@ -2,7 +2,7 @@
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 1st June 2025
+- **Date:** 3rd June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion

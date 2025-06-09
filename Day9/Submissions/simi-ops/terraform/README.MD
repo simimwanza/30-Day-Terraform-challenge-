@@ -6,28 +6,28 @@ This repository contains an enhanced Terraform configuration with support for mu
 
 ```
 terraform/
-├── main.tf                     # Main Terraform configuration
-├── variables.tf                # Variable definitions
-├── deploy.sh                   # Automation commands
-├── README.md                   # This file
-├── environments/               # Environment-specific configurations
+├── main.tf                     
+├── variables.tf                
+├── deploy.sh                   
+├── README.md                   
+├── environments/               
 │   ├── dev/
 │   │   └── terraform.tfvars
 │   ├── staging/
 │   │   └── terraform.tfvars
 │   └── production/
 │       └── terraform.tfvars
-├── modules/                    # Reusable Terraform modules
-│   ├── alb/                   # Application Load Balancer module
+├── modules/                   
+│   ├── alb/                   
 │   │   ├── main.tf
 │   │   ├── variables.tf
 │   │   └── outputs.tf
-│   ├── ec2/                   # EC2 instance module
+│   ├── ec2/                   
 │   │   ├── main.tf
 │   │   ├── variables.tf
 │   │   ├── outputs.tf
 │   │   └── user_data.sh
-│   └── security_group/        # Security Group module
+│   └── security_group/       
 │       ├── main.tf
 │       ├── variables.tf
 │       └── outputs.tf
@@ -56,15 +56,15 @@ terraform/
 
 ```bash
 # Make script executable
-chmod +x scripts/deploy.sh
+chmod +x deploy.sh
 
 # Deploy to different environments
-./scripts/deploy.sh dev plan
-./scripts/deploy.sh dev apply   
-./scripts/deploy.sh staging plan
-./scripts/deploy.sh staging apply
-./scripts/deploy.sh production plan
-./scripts/deploy.sh production apply
+./deploy.sh dev plan
+./deploy.sh dev apply   
+./deploy.sh staging plan
+./deploy.sh staging apply
+./deploy.sh production plan
+./deploy.sh production apply
 ```
 
 

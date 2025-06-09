@@ -1,14 +1,20 @@
-resource "aws_security_group" "this" {
-  name        = "web-server-sg"
-  description = "Allow web traffic and SSH access"
-
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
+}
+
+locals {
+  module_version = "1.0.0"
+  sg_name        = "${var.name_prefix}-sg"
+}
+
+resource "aws_security_group" "web" {
+  name        = local.sg_name
+  description = "Security group for ${var.environment} web server"
 
   ingress {
     description = "HTTP"
@@ -26,6 +32,14 @@ resource "aws_security_group" "this" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.environment == "production" ? ["10.0.0.0/8"] : ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -33,7 +47,9 @@ resource "aws_security_group" "this" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "web-server-security-group"
-  }
+  tags = merge(var.tags, {
+    Name          = local.sg_name
+    Module        = "security_group"
+    ModuleVersion = local.module_version
+  })
 }

@@ -32,10 +32,7 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - **Post Link:** https://x.com/simi_mwanza/status/1931811337828475098
 
 ## Notes and Observations
-- Set up modules for EC2, Security Group, and ALB to modularize the Terraform code.
-- Used variables for instance type and region to enhance flexibility.
-- Implemented remote state management using S3 and DynamoDB for state locking.
-- The deployment process was smooth, and the modular approach made it easy to manage and scale the infrastructure.
+-
 
 ## Additional Resources Used
 - Terraform Documentation
@@ -56,23 +53,32 @@ Day9/
         ├── architecture/
         │   └── web-server.png
         ├── terraform/
-        │   └── web-server/
-        │       ├── main.tf
-        │       ├── variables.tf
-        │       ├── outputs.tf
-        │       ├── modules/
-        │       │   ├── ec2/
-        │       │   │   ├── main.tf
-        │       │   │   ├── variables.tf
-        │       │   │   └── outputs.tf
-        │       │   ├── security_group/
-        │       │   │   ├── main.tf
-        │       │   │   ├── variables.tf
-        │       │   │   └── outputs.tf
-        │       │   └── alb/
-        │       │       ├── main.tf
-        │       │       ├── variables.tf
-        │       │       └── outputs.tf
+            ├── main.tf                     # Main Terraform configuration
+            ├── variables.tf                # Variable definitions
+            ├── README.md                   # This file
+            ├── environments/               # Environment-specific configurations
+            │   ├── dev/
+            │   │   └── terraform.tfvars
+            │   ├── staging/
+            │   │   └── terraform.tfvars
+            │   └── production/
+            │       └── terraform.tfvars
+            ├── modules/                    # Reusable Terraform modules
+            │   ├── alb/                   # Application Load Balancer module
+            │   │   ├── main.tf
+            │   │   ├── variables.tf
+            │   │   └── outputs.tf
+            │   ├── ec2/                   # EC2 instance module
+            │   │   ├── main.tf
+            │   │   ├── variables.tf
+            │   │   ├── outputs.tf
+            │   │   └── user_data.sh
+            │   └── security_group/        # Security Group module
+            │       ├── main.tf
+            │       ├── variables.tf
+            │       └── outputs.tf
+            └── scripts/                   # Deployment scripts
+                └── deploy.sh
         └── day9-SimiMwanza.md
 ``` 
 

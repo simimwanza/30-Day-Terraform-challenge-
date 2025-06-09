@@ -32,7 +32,9 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 - **Post Link:** https://x.com/simi_mwanza/status/1931811337828475098
 
 ## Notes and Observations
--
+- Worked in Nested Modules for better organization.
+- Implemented versioning for modules to ensure stability across environments.
+- Used environment-specific variables to customize deployments.
 
 ## Additional Resources Used
 - Terraform Documentation
@@ -40,10 +42,10 @@ Please place your infrastructure diagrams in the `architecture` folder with the 
 
 ## Time Spent
 - Reading: [2 hours]
-- Infrastructure Deployment: [2 hours]
+- Infrastructure Deployment: [5 hours]
 - Diagram Creation: [1 hours]
 - Blog Writing: [2 hours]
-- Total: [7 hours]
+- Total: [10 hours]
 
 ## Repository Structure
 ```

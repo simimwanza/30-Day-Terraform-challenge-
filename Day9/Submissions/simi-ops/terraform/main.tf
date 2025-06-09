@@ -10,7 +10,7 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-  
+
   default_tags {
     tags = var.tags
   }
@@ -18,7 +18,7 @@ provider "aws" {
 
 locals {
   name_prefix = "${var.environment}-web"
-  
+
   common_tags = merge(var.tags, {
     Environment = var.environment
     ManagedBy   = "terraform"
@@ -40,7 +40,7 @@ data "aws_ami" "amazon_linux" {
 
 module "security_group" {
   source = "./modules/security_group"
-  
+
   environment = var.environment
   name_prefix = local.name_prefix
   tags        = local.common_tags

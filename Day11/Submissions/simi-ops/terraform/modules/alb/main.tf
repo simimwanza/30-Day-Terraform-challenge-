@@ -11,6 +11,11 @@ locals {
   module_version = "1.0.0"
   alb_name       = "${var.name_prefix}-alb"
   tg_name        = "${var.name_prefix}-tg"
+  
+  # Conditional health check settings based on environment
+  health_check_interval = var.environment == "production" ? 15 : 30
+  health_check_timeout  = var.environment == "production" ? 10 : 5
+  health_check_path     = var.environment == "production" ? "/health" : "/"
 }
 
 data "aws_vpc" "default" {
@@ -31,16 +36,21 @@ resource "aws_lb" "web" {
   security_groups    = [var.security_group_id]
   subnets            = data.aws_subnets.default.ids
 
+  # Conditional deletion protection based on environment
   enable_deletion_protection = var.environment == "production"
 
-  # dynamic "access_logs" {
-  #   for_each = var.environment != "dev" ? [1] : []
-  #   content {
-  #     bucket  = "simi-ops-my-alb-logs${var.environment}"
-  #     prefix  = "alb-logs"
-  #     enabled = true
-  #   }
-  # }
+  # Conditional idle timeout based on environment
+  idle_timeout = var.environment == "production" ? 300 : 60
+
+  # Conditional access logs based on environment
+  dynamic "access_logs" {
+    for_each = var.environment != "dev" ? [1] : []
+    content {
+      bucket  = "simi-ops-alb-logs-${var.environment}"
+      prefix  = "alb-logs"
+      enabled = true
+    }
+  }
 
   tags = merge(var.tags, {
     Name          = local.alb_name
@@ -55,16 +65,29 @@ resource "aws_lb_target_group" "web" {
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
 
+  # Conditional target group settings based on environment
+  deregistration_delay = var.environment == "production" ? 300 : 60
+
+  # Conditional stickiness based on environment or parameter
+  dynamic "stickiness" {
+    for_each = var.enable_stickiness ? [1] : []
+    content {
+      type            = "lb_cookie"
+      cookie_duration = 86400
+      enabled         = true
+    }
+  }
+
   health_check {
     enabled             = true
-    healthy_threshold   = 2
-    interval            = 30
+    healthy_threshold   = var.environment == "production" ? 3 : 2
+    interval            = local.health_check_interval
     matcher             = "200"
-    path                = "/"
+    path                = local.health_check_path
     port                = "traffic-port"
     protocol            = "HTTP"
-    timeout             = 5
-    unhealthy_threshold = 2
+    timeout             = local.health_check_timeout
+    unhealthy_threshold = var.environment == "production" ? 3 : 2
   }
 
   tags = merge(var.tags, {
@@ -92,3 +115,22 @@ resource "aws_lb_listener" "web" {
     target_group_arn = aws_lb_target_group.web.arn
   }
 }
+
+# Conditional HTTPS listener for production and staging
+resource "aws_lb_listener" "https" {
+  count = var.environment != "dev" ? 1 : 0
+  
+  load_balancer_arn = aws_lb.web.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:${data.aws_region.current.name}:123456789012:certificate/example-cert"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web.arn
+  }
+}
+
+# Get current region for certificate ARN
+data "aws_region" "current" {}

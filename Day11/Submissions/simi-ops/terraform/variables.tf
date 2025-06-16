@@ -48,3 +48,26 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+# New variables for conditional deployments
+variable "force_alb_in_dev" {
+  description = "Force ALB deployment in dev environment"
+  type        = bool
+  default     = false
+}
+
+variable "enable_enhanced_monitoring" {
+  description = "Enable enhanced monitoring for EC2 instances"
+  type        = bool
+  default     = false
+}
+
+variable "backup_retention_days" {
+  description = "Number of days to retain backups"
+  type        = map(number)
+  default = {
+    dev        = 1
+    staging    = 7
+    production = 30
+  }
+}

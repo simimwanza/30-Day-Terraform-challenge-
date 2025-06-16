@@ -22,7 +22,13 @@ locals {
   common_tags = merge(var.tags, {
     Environment = var.environment
     ManagedBy   = "terraform"
+    Project     = "30-day-terraform-challenge"
   })
+
+  # Conditional deployment flags
+  deploy_alb        = var.environment != "dev" || var.force_alb_in_dev
+  deploy_monitoring = var.environment != "dev"
+  deploy_backup     = var.environment == "production"
 }
 
 data "aws_ami" "amazon_linux" {
@@ -56,7 +62,10 @@ module "ec2" {
   tags              = local.common_tags
 }
 
+# Conditional ALB deployment
 module "alb" {
+  count = local.deploy_alb ? 1 : 0
+
   source            = "./modules/alb"
   environment       = var.environment
   name_prefix       = local.name_prefix
@@ -66,7 +75,43 @@ module "alb" {
   enable_stickiness = var.environment == "production"
 }
 
+# Conditional CloudWatch monitoring for non-dev environments
+resource "aws_cloudwatch_metric_alarm" "high_cpu" {
+  count = local.deploy_monitoring ? 1 : 0
 
+  alarm_name          = "${local.name_prefix}-high-cpu"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = var.environment == "production" ? 70 : 80
+  alarm_description   = "This metric monitors ec2 cpu utilization"
+
+  dimensions = {
+    InstanceId = module.ec2.instance_ids[0]
+  }
+}
+
+# Conditional backup for production environment
+resource "aws_backup_plan" "production" {
+  count = local.deploy_backup ? 1 : 0
+
+  name = "${local.name_prefix}-backup-plan"
+
+  rule {
+    rule_name         = "daily-backup"
+    target_vault_name = "Default"
+    schedule          = "cron(0 12 * * ? *)"
+
+    lifecycle {
+      delete_after = 14
+    }
+  }
+
+  tags = local.common_tags
+}
 
 output "public_dns" {
   description = "Public DNS name of the EC2 instance"
@@ -75,7 +120,7 @@ output "public_dns" {
 
 output "alb_dns_name" {
   description = "DNS name of the Application Load Balancer"
-  value       = module.alb.alb_dns_name
+  value       = local.deploy_alb ? module.alb[0].alb_dns_name : "ALB not deployed in this environment"
 }
 
 output "environment" {

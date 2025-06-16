@@ -1,153 +1,138 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
+locals {
+  name_prefix = "${var.environment}-web"
+
+  common_tags = merge(var.tags, {
+    Environment = var.environment
+    ManagedBy   = "terraform"
+    Project     = "30-day-terraform-challenge"
+  })
+
+  # Conditional deployment flags
+  deploy_alb        = var.environment != "dev" || var.force_alb_in_dev
+  deploy_monitoring = var.environment != "dev"
+  deploy_backup     = var.environment == "production"
 }
 
 data "aws_ami" "amazon_linux" {
   most_recent = true
   owners      = ["amazon"]
-
   filter {
     name   = "name"
     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
   }
-
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
 }
 
-resource "aws_security_group" "ec2_sg" {
-  name        = "web-server-sg"
-  description = "Allow web traffic and SSH access"
+module "security_group" {
+  source = "./modules/security_group"
 
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  environment = var.environment
+  name_prefix = local.name_prefix
+  tags        = local.common_tags
+}
 
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+module "ec2" {
+  source            = "./modules/ec2"
+  environment       = var.environment
+  name_prefix       = local.name_prefix
+  ami_id            = data.aws_ami.amazon_linux.id
+  instance_type     = var.instance_type[var.environment]
+  security_group_id = module.security_group.security_group_id
+  tags              = local.common_tags
+}
 
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+# Conditional ALB deployment
+module "alb" {
+  count = local.deploy_alb ? 1 : 0
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  source            = "./modules/alb"
+  environment       = var.environment
+  name_prefix       = local.name_prefix
+  security_group_id = module.security_group.security_group_id
+  instance_ids      = module.ec2.instance_ids
+  tags              = local.common_tags
+  enable_stickiness = var.environment == "production"
+}
 
-  tags = {
-    Name = "web-server-security-group"
+# Conditional CloudWatch monitoring for non-dev environments
+resource "aws_cloudwatch_metric_alarm" "high_cpu" {
+  count = local.deploy_monitoring ? 1 : 0
+
+  alarm_name          = "${local.name_prefix}-high-cpu"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = var.environment == "production" ? 70 : 80
+  alarm_description   = "This metric monitors ec2 cpu utilization"
+
+  dimensions = {
+    InstanceId = module.ec2.instance_ids[0]
   }
 }
 
-resource "aws_instance" "web_server" {
-  ami                    = data.aws_ami.amazon_linux.id
-  instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+# Conditional backup for production environment
+resource "aws_backup_plan" "production" {
+  count = local.deploy_backup ? 1 : 0
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y httpd
-              systemctl start httpd
-              systemctl enable httpd
-              echo "<h1>Hello World from Terraform 30 Day Challenge: Day 7</h1>" > /var/www/html/index.html
-              EOF
+  name = "${local.name_prefix}-backup-plan"
 
-  tags = {
-    Name = "WebServer"
-  }
-}
+  rule {
+    rule_name         = "daily-backup"
+    target_vault_name = "Default"
+    schedule          = "cron(0 12 * * ? *)"
 
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
-resource "aws_lb" "web_alb" {
-  name               = "web-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.ec2_sg.id]
-  subnets            = data.aws_subnets.default.ids
-
-  tags = {
-    Name = "WebALB"
-  }
-}
-
-resource "aws_lb_target_group" "web_tg" {
-  name     = "web-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = data.aws_vpc.default.id
-
-  health_check {
-    path                = "/"
-    protocol            = "HTTP"
-    matcher             = "200"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    lifecycle {
+      delete_after = 14
+    }
   }
 
-  tags = {
-    Name = "WebTargetGroup"
-  }
-}
-
-resource "aws_lb_listener" "web_listener" {
-  load_balancer_arn = aws_lb.web_alb.arn
-  port              = 80
-  protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.web_tg.arn
-  }
-}
-
-resource "aws_lb_target_group_attachment" "web_attachment" {
-  target_group_arn = aws_lb_target_group.web_tg.arn
-  target_id        = aws_instance.web_server.id
-  port             = 80
-}
-
-output "public_ip" {
-  description = "Public IP address of the web server"
-  value       = aws_instance.web_server.public_ip
+  tags = local.common_tags
 }
 
 output "public_dns" {
-  description = "Public DNS name of the web server"
-  value       = aws_instance.web_server.public_dns
+  description = "Public DNS name of the EC2 instance"
+  value       = module.ec2.public_dns
 }
 
 output "alb_dns_name" {
-  description = "DNS name of the load balancer"
-  value       = aws_lb.web_alb.dns_name
+  description = "DNS name of the Application Load Balancer"
+  value       = local.deploy_alb ? module.alb[0].alb_dns_name : "ALB not deployed in this environment"
+}
+
+output "environment" {
+  description = "Current environment"
+  value       = var.environment
+}
+
+output "instance_details" {
+  description = "Details of all EC2 instances"
+  value = {
+    instance_ids = module.ec2.instance_ids
+    public_ips   = module.ec2.public_ips
+    private_ips  = module.ec2.private_ips
+  }
 }

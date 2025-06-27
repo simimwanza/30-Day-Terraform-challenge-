@@ -1,153 +1,136 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
+locals {
+  name_prefix = "${var.environment}-web"
+
+  common_tags = merge(var.tags, {
+    Environment = var.environment
+    ManagedBy   = "terraform"
+    Project     = "30-day-terraform-challenge"
+  })
+
+  # Conditional deployment flags
+  deploy_alb        = var.environment != "dev" || var.force_alb_in_dev
+  deploy_monitoring = var.environment != "dev"
+  deploy_backup     = var.environment == "production"
 }
 
 data "aws_ami" "amazon_linux" {
   most_recent = true
   owners      = ["amazon"]
-
   filter {
     name   = "name"
     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
   }
-
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
 }
 
-resource "aws_security_group" "ec2_sg" {
-  name        = "web-server-sg"
-  description = "Allow web traffic and SSH access"
+module "security_group" {
+  source = "./modules/security_group"
 
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "web-server-security-group"
-  }
+  environment = var.environment
+  name_prefix = local.name_prefix
+  tags        = local.common_tags
 }
 
-resource "aws_instance" "web_server" {
-  ami                    = data.aws_ami.amazon_linux.id
-  instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+# Auto Scaling Group deployment
+module "asg" {
+  source                = "./modules/asg"
+  environment           = var.environment
+  name_prefix           = local.name_prefix
+  ami_id                = data.aws_ami.amazon_linux.id
+  instance_type         = var.instance_type[var.environment]
+  security_group_id     = module.security_group.security_group_id
+  min_size              = var.min_size[var.environment]
+  max_size              = var.max_size[var.environment]
+  desired_capacity      = var.min_size[var.environment]
+  target_group_arns     = local.deploy_alb ? [module.alb[0].target_group_arn] : []
+  instance_profile_name = module.secrets.instance_profile_name
+  secret_name           = module.secrets.secret_name
+  tags                  = local.common_tags
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y httpd
-              systemctl start httpd
-              systemctl enable httpd
-              echo "<h1>Hello World from Terraform 30 Day Challenge: Day 7</h1>" > /var/www/html/index.html
-              EOF
-
-  tags = {
-    Name = "WebServer"
-  }
+  depends_on = [module.alb, module.secrets]
 }
 
-data "aws_vpc" "default" {
-  default = true
+# Conditional ALB deployment
+module "alb" {
+  count = local.deploy_alb ? 1 : 0
+
+  source            = "./modules/alb"
+  environment       = var.environment
+  name_prefix       = local.name_prefix
+  security_group_id = module.security_group.security_group_id
+  instance_ids      = []
+  tags              = local.common_tags
+  enable_stickiness = var.environment == "production"
 }
 
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
+# Secrets management
+module "secrets" {
+  source = "./modules/secrets"
+
+  environment       = var.environment
+  name_prefix       = local.name_prefix
+  database_password = var.database_password
+  api_key          = var.api_key
+  jwt_secret       = var.jwt_secret
+  tags             = local.common_tags
 }
 
-resource "aws_lb" "web_alb" {
-  name               = "web-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.ec2_sg.id]
-  subnets            = data.aws_subnets.default.ids
 
-  tags = {
-    Name = "WebALB"
-  }
-}
 
-resource "aws_lb_target_group" "web_tg" {
-  name     = "web-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = data.aws_vpc.default.id
 
-  health_check {
-    path                = "/"
-    protocol            = "HTTP"
-    matcher             = "200"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-  }
 
-  tags = {
-    Name = "WebTargetGroup"
-  }
-}
-
-resource "aws_lb_listener" "web_listener" {
-  load_balancer_arn = aws_lb.web_alb.arn
-  port              = 80
-  protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.web_tg.arn
-  }
-}
-
-resource "aws_lb_target_group_attachment" "web_attachment" {
-  target_group_arn = aws_lb_target_group.web_tg.arn
-  target_id        = aws_instance.web_server.id
-  port             = 80
-}
-
-output "public_ip" {
-  description = "Public IP address of the web server"
-  value       = aws_instance.web_server.public_ip
-}
-
-output "public_dns" {
-  description = "Public DNS name of the web server"
-  value       = aws_instance.web_server.public_dns
+output "asg_name" {
+  description = "Name of the Auto Scaling Group"
+  value       = module.asg.asg_name
 }
 
 output "alb_dns_name" {
-  description = "DNS name of the load balancer"
-  value       = aws_lb.web_alb.dns_name
+  description = "DNS name of the Application Load Balancer"
+  value       = local.deploy_alb ? module.alb[0].alb_dns_name : "ALB not deployed in this environment"
+}
+
+output "environment" {
+  description = "Current environment"
+  value       = var.environment
+}
+
+output "asg_details" {
+  description = "Auto Scaling Group details"
+  value = {
+    asg_name          = module.asg.asg_name
+    asg_arn           = module.asg.asg_arn
+    launch_template   = module.asg.launch_template_name
+  }
+}
+
+output "secrets_arn" {
+  description = "ARN of the secrets manager secret"
+  value       = module.secrets.secret_arn
+  sensitive   = true
+}
+
+output "instance_profile_name" {
+  description = "Name of the IAM instance profile for secrets access"
+  value       = module.secrets.instance_profile_name
 }

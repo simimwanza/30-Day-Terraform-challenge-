@@ -10,45 +10,18 @@
 - [x] Completed Required Hands-on Labs (Lab 14: Module Versioning, Lab 15: Terraform Testing)
 - [x] Implemented secure management of sensitive data using AWS Secrets Manager
 - [x] Ensured sensitive data is properly masked and encrypted in Terraform state files
+- [x] Set up multi-region deployment using multiple AWS provider instances
 
 ## Infrastructure Details
 
-### Secure Secrets Management with AWS Secrets Manager
+### Multi-Region Deployment with Multiple AWS Providers
 
-Successfully implemented secure secrets management using:
+Successfully implemented multi-region infrastructure using:
 
-1. **AWS Secrets Manager Integration**
-   - Secrets stored encrypted in AWS Secrets Manager
-   - Automatic encryption at rest using AWS KMS
-   - Environment-specific secret recovery policies (30 days for production, 0 for dev)
-
-2. **IAM Role-Based Access Control**
-   - EC2 instances use IAM roles to access secrets
-   - Principle of least privilege applied
-   - Instance profiles attached to launch templates
-
-3. **Terraform State Security**
-   - Sensitive variables marked with `sensitive = true`
-   - Secrets masked in Terraform plan/apply output
-   - State file encryption enabled in S3 backend
-
-4. **Runtime Secret Retrieval**
-   - Secrets retrieved dynamically during instance startup
-   - Configuration files secured with proper permissions (600)
-   - No hardcoded credentials in code or user data
-
-5. **Environment Separation**
-   - Different secrets per environment (dev, staging, production)
-   - Separate IAM roles and policies per environment
-   - Secrets files excluded from version control
-
-6. **Security Features Implemented**
-   - ✅ AWS Secrets Manager for encrypted secret storage
-   - ✅ IAM role-based access with minimal permissions
-   - ✅ Sensitive data masking in Terraform state
-   - ✅ Runtime secret retrieval (no secrets in code)
-   - ✅ Environment-specific secret management
-   - ✅ Proper file permissions and security controls
+1. **Multiple Provider Configuration**
+   - Primary AWS provider for main region deployment
+   - Secondary AWS provider with alias "backup" for disaster recovery
+   - Region-specific default tags and configurations
 
 
 ## Infrastructure Diagram
@@ -56,7 +29,7 @@ Please see the `architecture/web-server.png` file for the infrastructure diagram
 
 ## Blog Post
 - **Title:** "Managing Multi-Region Deployments with Terraform Providers"
-- **Link:** [Blog Post](https://simiops.hashnode.dev/how-to-handle-sensitive-data-securely-in-terraform)
+- **Link:** [Blog Post](https://simiops.hashnode.dev/managing-multi-region-deployments-with-terraform-providers)
 
 ## Social Media
 - **Platform:** Twitter
@@ -64,22 +37,18 @@ Please see the `architecture/web-server.png` file for the infrastructure diagram
 
 ## Notes and Observations
 
-### Secure Secrets Management Implementation
-- Successfully integrated AWS Secrets Manager for encrypted secret storage
-- Implemented IAM role-based access control with principle of least privilege
-- Ensured sensitive data is properly masked in Terraform state files
-- Created runtime secret retrieval mechanism for enhanced security
-- Established environment-specific secret management practices
+### Multi-Region Provider Implementation
+- Successfully configured multiple AWS provider instances with aliases
+- Implemented conditional multi-region deployment for production environment
 
-### Key Security Achievements
-- ✅ AWS Secrets Manager integration with KMS encryption
-- ✅ IAM roles and policies for secure secret access
-- ✅ Sensitive variable masking in Terraform state
-- ✅ Runtime secret retrieval (no hardcoded secrets)
-- ✅ Environment separation for secrets
-- ✅ Security documentation and best practices
-- ✅ Proper file permissions and access controls
-- ✅ Version control exclusion of sensitive files
+### Key Multi-Region Achievements
+- ✅ Multiple AWS provider configuration (primary + backup)
+- ✅ Conditional deployment based on environment
+- ✅ Region-specific AMI data sources
+- ✅ Independent secrets management per region
+- ✅ Cost-optimized multi-region strategy
+- ✅ Provider aliases for resource targeting
+- ✅ Region-specific tagging and configurations
 
 
 ## Additional Resources Used

@@ -46,9 +46,9 @@ cat > /var/www/html/index.html << EOF
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the 30-Day Terraform Challenge Day 13!</h1>
+        <h1>Welcome to the 30-Day Terraform Challenge Day 14!</h1>
         <h2>Environment: <span class="environment">${environment}</span></h2>
-        <p>This is a web server with <span class="secure">secure secrets management</span> using AWS Secrets Manager.</p>
+        <p>Setting up multiple providers and modules in Terraform</p>
         <p>Instance details:</p>
         <ul>
             <li>Environment: ${environment}</li>

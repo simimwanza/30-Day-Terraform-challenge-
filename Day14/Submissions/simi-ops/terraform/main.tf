@@ -8,11 +8,24 @@ terraform {
   }
 }
 
+# Primary provider for main region
 provider "aws" {
   region = var.aws_region
 
   default_tags {
     tags = var.tags
+  }
+}
+
+# Secondary provider for backup region
+provider "aws" {
+  alias  = "backup"
+  region = var.backup_region
+
+  default_tags {
+    tags = merge(var.tags, {
+      Region = "backup"
+    })
   }
 }
 
@@ -32,6 +45,22 @@ locals {
 }
 
 data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+data "aws_ami" "backup" {
+  count = var.environment == "production" ? 1 : 0
+
+  provider    = aws.backup
   most_recent = true
   owners      = ["amazon"]
   filter {
@@ -94,6 +123,51 @@ module "secrets" {
   api_key           = var.api_key
   jwt_secret        = var.jwt_secret
   tags              = local.common_tags
+}
+
+# Backup region deployment (production only)
+module "backup_asg" {
+  count = var.environment == "production" ? 1 : 0
+
+  source                = "./modules/asg"
+  providers             = { aws = aws.backup }
+  environment           = var.environment
+  name_prefix           = "${local.name_prefix}-backup"
+  ami_id                = data.aws_ami.backup[0].id
+  instance_type         = var.instance_type[var.environment]
+  security_group_id     = module.backup_security_group[0].security_group_id
+  min_size              = 1
+  max_size              = 2
+  desired_capacity      = 1
+  target_group_arns     = []
+  instance_profile_name = module.backup_secrets[0].instance_profile_name
+  secret_name           = module.backup_secrets[0].secret_name
+  tags                  = merge(local.common_tags, { Region = "backup" })
+
+  depends_on = [module.backup_secrets]
+}
+
+module "backup_security_group" {
+  count = var.environment == "production" ? 1 : 0
+
+  source      = "./modules/security_group"
+  providers   = { aws = aws.backup }
+  environment = var.environment
+  name_prefix = "${local.name_prefix}-backup"
+  tags        = merge(local.common_tags, { Region = "backup" })
+}
+
+module "backup_secrets" {
+  count = var.environment == "production" ? 1 : 0
+
+  source            = "./modules/secrets"
+  providers         = { aws = aws.backup }
+  environment       = var.environment
+  name_prefix       = "${local.name_prefix}-backup"
+  database_password = var.database_password
+  api_key           = var.api_key
+  jwt_secret        = var.jwt_secret
+  tags              = merge(local.common_tags, { Region = "backup" })
 }
 
 

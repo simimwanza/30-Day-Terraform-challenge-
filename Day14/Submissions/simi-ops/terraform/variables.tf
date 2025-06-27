@@ -13,6 +13,12 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
+variable "backup_region" {
+  description = "Backup AWS region for disaster recovery"
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "instance_type" {
   description = "EC2 instance type per environment"
   type        = map(string)

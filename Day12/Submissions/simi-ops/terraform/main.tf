@@ -84,24 +84,7 @@ module "alb" {
 
 
 
-# Conditional backup for production environment
-resource "aws_backup_plan" "production" {
-  count = local.deploy_backup ? 1 : 0
 
-  name = "${local.name_prefix}-backup-plan"
-
-  rule {
-    rule_name         = "daily-backup"
-    target_vault_name = "Default"
-    schedule          = "cron(0 12 * * ? *)"
-
-    lifecycle {
-      delete_after = 14
-    }
-  }
-
-  tags = local.common_tags
-}
 
 output "asg_name" {
   description = "Name of the Auto Scaling Group"

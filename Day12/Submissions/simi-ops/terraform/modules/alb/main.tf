@@ -42,15 +42,7 @@ resource "aws_lb" "web" {
   # Conditional idle timeout based on environment
   idle_timeout = var.environment == "production" ? 300 : 60
 
-  # Conditional access logs based on environment
-  dynamic "access_logs" {
-    for_each = var.environment != "dev" ? [1] : []
-    content {
-      bucket  = "simi-ops-alb-logs-${var.environment}"
-      prefix  = "alb-logs"
-      enabled = true
-    }
-  }
+
 
   tags = merge(var.tags, {
     Name          = local.alb_name
@@ -111,21 +103,3 @@ resource "aws_lb_listener" "web" {
   }
 }
 
-# Conditional HTTPS listener for production and staging
-resource "aws_lb_listener" "https" {
-  count = var.environment != "dev" ? 1 : 0
-  
-  load_balancer_arn = aws_lb.web.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:${data.aws_region.current.name}:123456789012:certificate/example-cert"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.web.arn
-  }
-}
-
-# Get current region for certificate ARN
-data "aws_region" "current" {}

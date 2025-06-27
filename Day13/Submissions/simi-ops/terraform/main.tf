@@ -91,9 +91,9 @@ module "secrets" {
   environment       = var.environment
   name_prefix       = local.name_prefix
   database_password = var.database_password
-  api_key          = var.api_key
-  jwt_secret       = var.jwt_secret
-  tags             = local.common_tags
+  api_key           = var.api_key
+  jwt_secret        = var.jwt_secret
+  tags              = local.common_tags
 }
 
 
@@ -118,9 +118,9 @@ output "environment" {
 output "asg_details" {
   description = "Auto Scaling Group details"
   value = {
-    asg_name          = module.asg.asg_name
-    asg_arn           = module.asg.asg_arn
-    launch_template   = module.asg.launch_template_name
+    asg_name        = module.asg.asg_name
+    asg_arn         = module.asg.asg_arn
+    launch_template = module.asg.launch_template_name
   }
 }
 

@@ -8,7 +8,7 @@ terraform {
 }
 
 locals {
-  module_version = "1.0.0"
+  module_version = "2.0.0"
   asg_name       = "${var.name_prefix}-asg"
   lt_name        = "${var.name_prefix}-lt"
 }
@@ -35,7 +35,7 @@ resource "aws_launch_template" "web" {
     enabled = var.environment == "production"
   }
   
-  user_data = base64encode(templatefile("${path.module}/../ec2/user_data.sh", {
+  user_data = base64encode(templatefile("${path.module}/../ec2/docker_user_data.sh", {
     environment = var.environment
     instance_id = "asg"
   }))

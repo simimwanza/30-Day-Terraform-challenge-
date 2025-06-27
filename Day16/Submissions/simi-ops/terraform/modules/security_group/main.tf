@@ -8,7 +8,7 @@ terraform {
 }
 
 locals {
-  module_version = "1.0.0"
+  module_version = "2.0.0"
   sg_name        = "${var.name_prefix}-sg"
   
   # Conditional SSH access based on environment
@@ -72,6 +72,18 @@ resource "aws_security_group" "web" {
       description = "Application specific port"
       from_port   = 8080
       to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/8"]
+    }
+  }
+
+  # Docker daemon port for container management (if needed)
+  dynamic "ingress" {
+    for_each = var.environment == "production" ? [1] : []
+    content {
+      description = "Docker daemon"
+      from_port   = 2376
+      to_port     = 2376
       protocol    = "tcp"
       cidr_blocks = ["10.0.0.0/8"]
     }

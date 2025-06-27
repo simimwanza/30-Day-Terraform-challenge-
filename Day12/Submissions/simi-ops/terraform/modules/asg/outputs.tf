@@ -8,9 +8,14 @@ output "asg_arn" {
   value       = aws_autoscaling_group.web.arn
 }
 
-output "launch_configuration_name" {
-  description = "Name of the launch configuration"
-  value       = aws_launch_configuration.web.name
+output "launch_template_id" {
+  description = "ID of the launch template"
+  value       = aws_launch_template.web.id
+}
+
+output "launch_template_name" {
+  description = "Name of the launch template"
+  value       = aws_launch_template.web.name
 }
 
 output "scale_up_policy_arn" {

@@ -17,9 +17,9 @@ cat > /var/www/html/index.html << EOF
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the 30-Day Terraform Challenge Day 11!</h1>
+        <h1>Welcome to the 30-Day Terraform Challenge Day 12!</h1>
         <h2>Environment: <span class="environment">${environment}</span></h2>
-        <p>This is a web server deployed using Terraform modules.</p>
+        <p>This is a web server deployed using Terraform modules and Auto scaling group for zero dowtimedeployment.</p>
         <p>Instance details:</p>
         <ul>
             <li>Environment: ${environment}</li>

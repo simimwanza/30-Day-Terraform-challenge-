@@ -10,7 +10,7 @@ terraform {
 locals {
   module_version = "1.0.0"
   asg_name       = "${var.name_prefix}-asg"
-  lc_name        = "${var.name_prefix}-lc"
+  lt_name        = "${var.name_prefix}-lt"
 }
 
 data "aws_vpc" "default" {
@@ -24,22 +24,38 @@ data "aws_subnets" "default" {
   }
 }
 
-resource "aws_launch_configuration" "web" {
-  name_prefix          = "${local.lc_name}-"
-  image_id             = var.ami_id
-  instance_type        = var.instance_type
-  security_groups      = [var.security_group_id]
-  enable_monitoring    = var.environment == "production"
+resource "aws_launch_template" "web" {
+  name_prefix   = "${local.lt_name}-"
+  image_id      = var.ami_id
+  instance_type = var.instance_type
+  
+  vpc_security_group_ids = [var.security_group_id]
+  
+  monitoring {
+    enabled = var.environment == "production"
+  }
   
   user_data = base64encode(templatefile("${path.module}/../ec2/user_data.sh", {
     environment = var.environment
     instance_id = "asg"
   }))
 
-  root_block_device {
-    volume_size = var.environment == "production" ? 50 : (var.environment == "staging" ? 30 : 20)
-    volume_type = var.environment == "production" ? "gp3" : "gp2"
-    encrypted   = var.environment == "production"
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size = var.environment == "production" ? 50 : (var.environment == "staging" ? 30 : 20)
+      volume_type = var.environment == "production" ? "gp3" : "gp2"
+      encrypted   = var.environment == "production"
+    }
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = merge(var.tags, {
+      Name          = "${local.asg_name}-instance"
+      Module        = "asg"
+      ModuleVersion = local.module_version
+    })
   }
 
   lifecycle {
@@ -48,15 +64,19 @@ resource "aws_launch_configuration" "web" {
 }
 
 resource "aws_autoscaling_group" "web" {
-  name                 = local.asg_name
-  launch_configuration = aws_launch_configuration.web.name
-  min_size             = var.min_size
-  max_size             = var.max_size
-  desired_capacity     = var.desired_capacity
-  vpc_zone_identifier  = data.aws_subnets.default.ids
-  target_group_arns    = var.target_group_arns
-  health_check_type    = length(var.target_group_arns) > 0 ? "ELB" : "EC2"
+  name                = local.asg_name
+  min_size            = var.min_size
+  max_size            = var.max_size
+  desired_capacity    = var.desired_capacity
+  vpc_zone_identifier = data.aws_subnets.default.ids
+  target_group_arns   = var.target_group_arns
+  health_check_type   = length(var.target_group_arns) > 0 ? "ELB" : "EC2"
   health_check_grace_period = 300
+
+  launch_template {
+    id      = aws_launch_template.web.id
+    version = "$Latest"
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -72,8 +92,8 @@ resource "aws_autoscaling_group" "web" {
 
   tag {
     key                 = "Name"
-    value               = "${local.asg_name}-instance"
-    propagate_at_launch = true
+    value               = local.asg_name
+    propagate_at_launch = false
   }
 
   dynamic "tag" {
@@ -81,20 +101,20 @@ resource "aws_autoscaling_group" "web" {
     content {
       key                 = tag.key
       value               = tag.value
-      propagate_at_launch = true
+      propagate_at_launch = false
     }
   }
 
   tag {
     key                 = "Module"
     value               = "asg"
-    propagate_at_launch = true
+    propagate_at_launch = false
   }
 
   tag {
     key                 = "ModuleVersion"
     value               = local.module_version
-    propagate_at_launch = true
+    propagate_at_launch = false
   }
 }
 

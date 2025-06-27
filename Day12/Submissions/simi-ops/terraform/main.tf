@@ -121,8 +121,8 @@ output "environment" {
 output "asg_details" {
   description = "Auto Scaling Group details"
   value = {
-    asg_name = module.asg.asg_name
-    asg_arn  = module.asg.asg_arn
-    launch_configuration = module.asg.launch_configuration_name
+    asg_name          = module.asg.asg_name
+    asg_arn           = module.asg.asg_arn
+    launch_template   = module.asg.launch_template_name
   }
 }

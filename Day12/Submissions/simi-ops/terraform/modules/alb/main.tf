@@ -97,13 +97,8 @@ resource "aws_lb_target_group" "web" {
   })
 }
 
-resource "aws_lb_target_group_attachment" "web" {
-  count = length(var.instance_ids)
-
-  target_group_arn = aws_lb_target_group.web.arn
-  target_id        = var.instance_ids[count.index]
-  port             = 80
-}
+# Target group attachments are handled by ASG
+# No manual attachments needed
 
 resource "aws_lb_listener" "web" {
   load_balancer_arn = aws_lb.web.arn

@@ -1,8 +1,8 @@
-# Day 11 Submission
+# Day 12 Submission
 
 ## Personal Information
 - **Name:** Simi Mwanza
-- **Date:** 7th June 2025
+- **Date:** 8th June 2025
 - **GitHub Username:** simi-ops
 
 ## Task Completion
@@ -13,43 +13,24 @@
 ## Infrastructure Details
 
 ### Dynamic Infrastructure with Conditionals
-I've refactored the Terraform code to use conditionals for dynamic infrastructure deployment across different environments (dev, staging, production). The key features include:
+
 
 1. **Environment-specific Resource Deployment**
-   - Different instance types and counts based on environment
-   - Additional EBS volumes only in staging and production
-   - ALB deployment optional in dev environment
 
-2. **Security Controls Based on Environment**
-   - Restricted SSH access in production (only from internal networks)
-   - Additional security group rules for monitoring in non-dev environments
-   - Environment-specific health check configurations
-
-3. **Performance and Reliability Features**
-   - Enhanced monitoring in production
-   - Backup plans only in production
-   - Different root volume sizes and types based on environment
 
 ## Infrastructure Diagram
 Please see the `architecture/web-server.png` file for the infrastructure diagram.
 
 ## Blog Post
 - **Title:** "Mastering Terraform Conditionals for Dynamic Infrastructure"
-- **Link:** [Blog Post](https://simiops.hashnode.dev/mastering-terraform-conditionals-for-dynamic-infrastructure?showSharer=true)
+- **Link:** [Blog Post](https://simiops.hashnode.dev/how-to-implement-bluegreen-deployments-with-terraform-for-zero-downtime?showSharer=true)
 
 ## Social Media
 - **Platform:** Twitter
-- **Post Link:** [Twitter Post](https://x.com/simi_mwanza/status/1934580430474473849)
+- **Post Link:** [Twitter Post](https://x.com/simiOps/status/1938551753974157316)
 
 ## Notes and Observations
-The use of conditionals in Terraform significantly improves the flexibility and reusability of infrastructure code. By implementing environment-specific configurations through conditionals, I was able to:
 
-1. Reduce code duplication across environments
-2. Implement cost optimization by only deploying necessary resources in each environment
-3. Apply appropriate security controls based on the environment's requirements
-4. Create a more maintainable codebase that can adapt to different deployment scenarios
-
-Conditionals are particularly powerful when combined with variables and locals to create dynamic infrastructure that responds to different inputs and requirements.
 
 ## Additional Resources Used
 - Terraform Documentation: https://www.terraform.io/docs/language/expressions/conditionals.html

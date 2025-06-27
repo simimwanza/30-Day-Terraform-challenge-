@@ -52,14 +52,21 @@ module "security_group" {
   tags        = local.common_tags
 }
 
-module "ec2" {
-  source            = "./modules/ec2"
+# Auto Scaling Group deployment
+module "asg" {
+  source            = "./modules/asg"
   environment       = var.environment
   name_prefix       = local.name_prefix
   ami_id            = data.aws_ami.amazon_linux.id
   instance_type     = var.instance_type[var.environment]
   security_group_id = module.security_group.security_group_id
+  min_size          = var.min_size[var.environment]
+  max_size          = var.max_size[var.environment]
+  desired_capacity  = var.min_size[var.environment]
+  target_group_arns = local.deploy_alb ? [module.alb[0].target_group_arn] : []
   tags              = local.common_tags
+
+  depends_on = [module.alb]
 }
 
 # Conditional ALB deployment
@@ -70,29 +77,12 @@ module "alb" {
   environment       = var.environment
   name_prefix       = local.name_prefix
   security_group_id = module.security_group.security_group_id
-  instance_ids      = module.ec2.instance_ids
+  instance_ids      = []
   tags              = local.common_tags
   enable_stickiness = var.environment == "production"
 }
 
-# Conditional CloudWatch monitoring for non-dev environments
-resource "aws_cloudwatch_metric_alarm" "high_cpu" {
-  count = local.deploy_monitoring ? 1 : 0
 
-  alarm_name          = "${local.name_prefix}-high-cpu"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
-  statistic           = "Average"
-  threshold           = var.environment == "production" ? 70 : 80
-  alarm_description   = "This metric monitors ec2 cpu utilization"
-
-  dimensions = {
-    InstanceId = module.ec2.instance_ids[0]
-  }
-}
 
 # Conditional backup for production environment
 resource "aws_backup_plan" "production" {
@@ -113,9 +103,9 @@ resource "aws_backup_plan" "production" {
   tags = local.common_tags
 }
 
-output "public_dns" {
-  description = "Public DNS name of the EC2 instance"
-  value       = module.ec2.public_dns
+output "asg_name" {
+  description = "Name of the Auto Scaling Group"
+  value       = module.asg.asg_name
 }
 
 output "alb_dns_name" {
@@ -128,11 +118,11 @@ output "environment" {
   value       = var.environment
 }
 
-output "instance_details" {
-  description = "Details of all EC2 instances"
+output "asg_details" {
+  description = "Auto Scaling Group details"
   value = {
-    instance_ids = module.ec2.instance_ids
-    public_ips   = module.ec2.public_ips
-    private_ips  = module.ec2.private_ips
+    asg_name = module.asg.asg_name
+    asg_arn  = module.asg.asg_arn
+    launch_configuration = module.asg.launch_configuration_name
   }
 }
